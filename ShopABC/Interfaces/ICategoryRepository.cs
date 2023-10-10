@@ -10,5 +10,6 @@ namespace ShopABC.Interfaces
         public Task<int> AddCategoryAsync(CategoryModel model);
         public Task UpdateCategoryAsync(int id, CategoryModel model);
         public Task DeleteCategoryAsync(int id);
+        public Task<List<CategoryModel>> Search(string name);
     }
 }

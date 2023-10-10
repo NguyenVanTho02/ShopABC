@@ -48,6 +48,17 @@ namespace ShopABC.Repositories
             return _mapper.Map<CategoryModel>(category);
         }
 
+        public async Task<List<CategoryModel>> Search(string name)
+        {
+            var catagories = await _context.Categories.ToListAsync();
+            if(!string.IsNullOrEmpty(name))
+            {
+                var result = catagories.Where(c => c.NameCategory.ToLower().Contains(name.ToLower()));
+                return _mapper.Map<List<CategoryModel>>(result);
+            }
+            return null;
+        }
+
         public async Task UpdateCategoryAsync(int id, CategoryModel model)
         {
             if(id == model.Idcategory)

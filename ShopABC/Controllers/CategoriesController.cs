@@ -42,6 +42,20 @@ namespace ShopABC.Controllers
             } 
         }
 
+        [HttpGet("Search/{value}")]
+        public async Task<IActionResult> SearchCategory(string value)
+        {
+            try
+            {
+                var categories = await _categoryRepo.Search(value);
+                return categories == null ? NotFound() : Ok(categories);
+            }
+            catch
+            {
+                return NotFound();
+            }
+        }
+
         [HttpPost]
         public async Task<IActionResult> AddNewCategory(CategoryModel model)
         {
@@ -61,6 +75,10 @@ namespace ShopABC.Controllers
         {
             try
             {
+                if(id != model.Idcategory)
+                {
+                    return NotFound();
+                }
                 await _categoryRepo.UpdateCategoryAsync(id, model);
                 return Ok();
             } catch
