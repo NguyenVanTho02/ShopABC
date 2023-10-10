@@ -11,8 +11,8 @@ namespace ShopABC.Entities
         }
 
         public int Idpromotion { get; set; }
-        public string? Code { get; set; }
-        public int? Value { get; set; }
+        public string Code { get; set; } = null!;
+        public int Value { get; set; }
 
         public virtual ICollection<Product> Products { get; set; }
     }

@@ -7,6 +7,6 @@ namespace ShopABC.Entities
     {
         public int? Idcart { get; set; }
         public int? Idproduct { get; set; }
-        public int? Quantity { get; set; }
+        public int Quantity { get; set; }
     }
 }
