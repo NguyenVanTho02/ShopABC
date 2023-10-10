@@ -6,8 +6,8 @@ namespace ShopABC.Interfaces
     public interface ICategoryRepository
     {
         public Task<List<CategoryModel>> GetAllCategoryAsync();
-        public Task<CategoryModel> GetBookAsync(int id);
-        public Task<int> AddBookAsync(CategoryModel model);
+        public Task<CategoryModel> GetCategoryAsync(int id);
+        public Task<int> AddCategoryAsync(CategoryModel model);
         public Task UpdateCategoryAsync(int id, CategoryModel model);
         public Task DeleteCategoryAsync(int id);
     }

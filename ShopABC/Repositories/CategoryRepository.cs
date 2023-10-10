@@ -17,7 +17,7 @@ namespace ShopABC.Repositories
             _context = context;
             _mapper = mapper;
         }
-        public async Task<int> AddBookAsync(CategoryModel model)
+        public async Task<int> AddCategoryAsync(CategoryModel model)
         {
             var newCategory = _mapper.Map<Category>(model);
             _context.Categories!.Add(newCategory);
@@ -42,7 +42,7 @@ namespace ShopABC.Repositories
             return _mapper.Map<List<CategoryModel>>(catagories);
         }
 
-        public async Task<CategoryModel> GetBookAsync(int id)
+        public async Task<CategoryModel> GetCategoryAsync(int id)
         {
             var category = await _context.Categories.FindAsync(id);
             return _mapper.Map<CategoryModel>(category);

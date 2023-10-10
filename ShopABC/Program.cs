@@ -1,5 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using ShopABC.AppDbContext;
+using ShopABC.Interfaces;
+using ShopABC.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,6 +19,9 @@ builder.Services.AddDbContext<ShopABCContext>(option => option.UseSqlServer(
     builder.Configuration.GetConnectionString("ShopABC")));
 
 builder.Services.AddAutoMapper(typeof(Program));
+
+// Life cycle DI: AddSingleton(), AddTransient(), AddScoped()
+builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 
 var app = builder.Build();
 
