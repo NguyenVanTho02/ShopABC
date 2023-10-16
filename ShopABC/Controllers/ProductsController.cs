@@ -17,11 +17,12 @@ namespace ShopABC.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllProduct()
+        public async Task<IActionResult> GetAllProduct(double? from, double? to, 
+            string? sortBy, int page = 1)
         {
             try
             {
-                return Ok(await _productRepo.GetAllProductAsync());
+                return Ok(await _productRepo.GetAllProductAsync(from, to, sortBy, page));
             } catch
             {
                 return BadRequest();

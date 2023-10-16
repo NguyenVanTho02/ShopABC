@@ -11,6 +11,7 @@ namespace ShopABC.Repositories
     {
         private readonly ShopABCContext _context;
         private readonly IMapper _mapper;
+        public static int PAGE_SIZE { get; set; } = 10;
         public ProductRepository(ShopABCContext context, IMapper mapper)
         {
             _context = context;
@@ -37,10 +38,46 @@ namespace ShopABC.Repositories
 
         }
 
-        public async Task<List<ProductModel>> GetAllProductAsync()
+        public async Task<List<ProductModel>> GetAllProductAsync(double? from, double? to, 
+            string? sortBy, int page = 1)
         {
-            var products = await _context.Products!.ToListAsync();
-            return _mapper.Map<List<ProductModel>>(products);
+            IQueryable<Product> products = _context.Products!;
+            #region Filtering
+            if (from.HasValue) 
+            {
+                products = products.Where(p => p.Price >= from);
+            }
+            if (to.HasValue)
+            {
+                products = products.Where(p => p.Price <= to);
+            }
+            #endregion
+
+            #region Sorting
+            products = products.OrderBy(p => p.Name);
+            if(!string.IsNullOrEmpty(sortBy))
+            {
+                switch(sortBy)
+                {
+                    case "name_desc":
+                        products = products.OrderByDescending(p => p.Name);
+                        break;
+                    case "price_asc":
+                        products = products.OrderBy(p => p.Price);
+                        break;
+                    case "price_desc":
+                        products = products.OrderByDescending(p => p.Price);
+                        break;
+                }
+            }
+            #endregion
+
+            #region Paging
+            products = products.Skip((page - 1) * PAGE_SIZE).Take(PAGE_SIZE);
+            #endregion
+
+            var result = await products.ToListAsync();
+            return _mapper.Map<List<ProductModel>>(result);
         }
 
         public async Task<ProductModel> GetProductAsync(int id)
@@ -57,7 +94,7 @@ namespace ShopABC.Repositories
                 var result = products.Where(c => c.Name.ToLower().Contains(name.ToLower()));
                 return _mapper.Map<List<ProductModel>>(result);
             }
-            return null;
+            return _mapper.Map<List<ProductModel>>(products); 
         }
 
         public async Task UpdateProductAsync(int id, ProductModel model)

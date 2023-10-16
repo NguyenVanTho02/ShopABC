@@ -16,16 +16,16 @@ namespace ShopABC.Repositories
             _context = context;
             _mapper = mapper; 
         }
-        public async Task<int> AddProductAsync(BrandModel model)
+
+        public async Task<int> AddBrandAsync(BrandModel model)
         {
             var newBrand = _mapper.Map<Brand>(model);
             _context.Brands!.Add(newBrand);
             await _context.SaveChangesAsync();
-
             return newBrand.Idbrand;
         }
 
-        public async Task DeleteProductAsync(int id)
+        public async Task DeleteBrandAsync(int id)
         {
             var deleteBrand = _context.Brands!.SingleOrDefault(b => b.Idbrand == id);
             if (deleteBrand != null)
@@ -35,13 +35,13 @@ namespace ShopABC.Repositories
             }
         }
 
-        public async Task<List<BrandModel>> GetAllProductAsync()
+        public async Task<List<BrandModel>> GetAllBrandAsync()
         {
             var brands = await _context.Brands!.ToListAsync();
             return _mapper.Map<List<BrandModel>>(brands);
         }
 
-        public async Task<BrandModel> GetProductAsync(int id)
+        public async Task<BrandModel> GetBrandAsync(int id)
         {
             var brand = await _context.Brands!.FindAsync(id);
             return _mapper.Map<BrandModel>(brand);
@@ -58,7 +58,7 @@ namespace ShopABC.Repositories
             return null;
         }
 
-        public async Task UpdateProductAsync(int id, BrandModel model)
+        public async Task UpdateBrandAsync(int id, BrandModel model)
         {
             if (id == model.Idbrand)
             {
